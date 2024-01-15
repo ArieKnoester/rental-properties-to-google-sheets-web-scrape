@@ -2,7 +2,8 @@
 # https://www.selenium.dev/documentation/
 from selenium import webdriver
 from selenium.webdriver.common.by import By
-from selenium.webdriver.common.keys import Keys
+from selenium.webdriver.support.wait import WebDriverWait
+from selenium.webdriver.support.expected_conditions import element_to_be_clickable, presence_of_all_elements_located
 from dotenv import load_dotenv
 from bs4 import BeautifulSoup
 import requests
@@ -37,7 +38,7 @@ def get_zillow_listings():
         # print(listing.address.text)
         address = listing.address.text.replace(" - ", ",").strip()
         address = re.split(r'[,|]', address)
-        # if any(char.isdigit() for char in address[0]):
+
         if address[0][0].isdigit():
             addresses.append(address[0].strip())
         else:
@@ -55,6 +56,24 @@ def get_zillow_listings():
     # pp.pprint(addresses)
     # pp.pprint(rents)
     # pp.pprint(urls)
+    add_rentals_to_form(addresses, rents, urls)
+
+
+def add_rentals_to_form(addresses, rents, urls):
+    driver = webdriver.Firefox()
+    driver.get(url=GOOGLE_FORM_URL)
+
+    for i in range(len(addresses)):
+        WebDriverWait(driver, timeout=10).until(presence_of_all_elements_located((By.CSS_SELECTOR, ".whsOnd.zHQkBf")))
+        inputs = driver.find_elements(By.CSS_SELECTOR, value=".whsOnd.zHQkBf")
+        inputs[0].send_keys(addresses[i])
+        inputs[1].send_keys(rents[i])
+        inputs[2].send_keys(urls[i])
+        submit = driver.find_element(By.CSS_SELECTOR, value=".NPEfkd.RveJvd.snByac")
+        submit.click()
+        WebDriverWait(driver, timeout=10).until(element_to_be_clickable((By.CSS_SELECTOR, ".c2gzEf>a"))).click()
+
+    driver.quit()
 
 
 get_zillow_listings()
