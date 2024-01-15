@@ -1,7 +1,5 @@
 # rental-properties-to-google-sheets-web-scrape
 
-Work in progress
-
 ## Description
 This program uses BeautifulSoup to scrape a Zillow site for available properties for rent. The URL for 
 the Zillow site contains all search filters within the URL (price range,area of town, etc...). For each 
