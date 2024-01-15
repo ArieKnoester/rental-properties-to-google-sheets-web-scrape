@@ -34,7 +34,7 @@ def get_zillow_listings():
 
     for listing in listings:
 
-        print(listing.address.text)
+        # print(listing.address.text)
         address = listing.address.text.replace(" - ", ",").strip()
         address = re.split(r'[,|]', address)
         # if any(char.isdigit() for char in address[0]):
@@ -51,10 +51,10 @@ def get_zillow_listings():
             url = "https://www.zillow.com" + url
         urls.append(url)
 
-    print(f"addresses: {len(addresses)}, rents: {len(rents)}, urls: {len(urls)}")
-    pp.pprint(addresses)
-    pp.pprint(rents)
-    pp.pprint(urls)
+    # print(f"addresses: {len(addresses)}, rents: {len(rents)}, urls: {len(urls)}")
+    # pp.pprint(addresses)
+    # pp.pprint(rents)
+    # pp.pprint(urls)
 
 
 get_zillow_listings()
